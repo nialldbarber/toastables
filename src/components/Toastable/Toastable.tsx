@@ -39,7 +39,13 @@ export type Props = {
    * message to close
    * `Default: 5000`
    */
-  autoClose?: number
+  timeActive?: number
+  /**
+   * Determines whether the toast closes automatically
+   * or not
+   * `Default: true`
+   */
+  autoClose?: boolean
   /**
    * Remove the toast when pressed
    * `Default: true`
@@ -60,6 +66,8 @@ export function Toastable({
   isActive,
   position = 'top',
   progressBar = false,
+  timeActive = 5000,
+  autoClose = true,
   closeOnPress,
   closeOnSwipe,
 }: Props) {
@@ -76,11 +84,15 @@ export function Toastable({
   useEffect(() => {
     if (visibility === 'show') {
       animatedPositionValue.value = withTiming(0)
-    }
-    return () => {
+      if (autoClose) {
+        setTimeout(() => {
+          hideToastable()
+        }, timeActive)
+      }
+    } else {
       animatedPositionValue.value = withTiming(INITIAL_POSITION)
     }
-  }, [visibility])
+  }, [visibility, autoClose])
 
   const styles = StyleSheet.create({
     container: {
