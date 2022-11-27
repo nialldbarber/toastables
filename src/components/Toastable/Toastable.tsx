@@ -1,8 +1,11 @@
+import { useEffect } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated'
+import { useToastable } from '../../utils/methods'
 import { positionStyles } from '../../styles'
 
 type ToastPosition = 'top' | 'bottom'
@@ -49,6 +52,8 @@ export type Props = {
   closeOnSwipe?: boolean
 }
 
+const INITIAL_POSITION = -100
+
 export function Toastable({
   title,
   message,
@@ -58,7 +63,8 @@ export function Toastable({
   closeOnPress,
   closeOnSwipe,
 }: Props) {
-  const animatedPositionValue = useSharedValue(0)
+  const { visibility, showToastable, hideToastable } = useToastable()
+  const animatedPositionValue = useSharedValue(INITIAL_POSITION)
 
   const animatedPositionStyle = useAnimatedStyle(() => {
     const derivedPosition = position
@@ -66,6 +72,15 @@ export function Toastable({
       [derivedPosition]: animatedPositionValue.value,
     }
   }, [position])
+
+  useEffect(() => {
+    if (visibility === 'show') {
+      animatedPositionValue.value = withTiming(0)
+    }
+    return () => {
+      animatedPositionValue.value = withTiming(INITIAL_POSITION)
+    }
+  }, [visibility])
 
   const styles = StyleSheet.create({
     container: {
@@ -88,3 +103,5 @@ export function Toastable({
     </Animated.View>
   )
 }
+
+export default Toastable
