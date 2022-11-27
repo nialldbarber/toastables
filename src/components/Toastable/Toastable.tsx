@@ -32,6 +32,12 @@ export type Props = {
    */
   progressBar?: boolean
   /**
+   * The time it takes in milliseconds for the toast
+   * message to close
+   * `Default: 5000`
+   */
+  autoClose?: number
+  /**
    * Remove the toast when pressed
    * `Default: true`
    */
@@ -82,5 +88,3 @@ export function Toastable({
     </Animated.View>
   )
 }
-
-export default Toastable

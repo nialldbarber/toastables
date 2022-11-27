@@ -15,7 +15,8 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-reanimated": "^2.13.0",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "~0.18.9",
+    "zustand": "^4.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
